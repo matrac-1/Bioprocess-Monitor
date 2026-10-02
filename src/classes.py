@@ -1,4 +1,5 @@
 import pandas as pandas
+import matplotlib.pyplot as plt
 
 class BioprocessMonitor:
     def __init__(self, filepath, ph_lims, temperature_lims):
@@ -155,6 +156,51 @@ class BioprocessMonitor:
         - Close the figure after saving.
         """
 
+        df_batch = self.extract_batch(batch_id)
+        fig, axes = plt.subplots(2,2,layout="constrained", dpi=400)
+
+        ph_mask = self.optimal_ph_mask(df_batch)
+        temp_mask = self.optimal_temperature_mask(df_batch)
+
+        #concentration stuff
+        axes[0, 0].scatter(df_batch["time_h"], df_batch["C_glucose_g_L^-1"],color="blue", marker="o", label="Glucose")
+        axes[0, 0].scatter(df_batch["time_h"], df_batch["C_biomass_g_L^-1"], color="green", marker="s", label="Biomass")
+        axes[0, 0].scatter(df_batch["time_h"], df_batch["C_product_g_L^-1"], color="orange", marker="^", label="Product")
+
+        axes[0,0].set_xlabel("Time [h]")
+        axes[0,0].set_ylabel("Concentration [g/L]")
+        axes[0,0].legend()
+
+        #temperature stuff
+        axes[0, 1].scatter(df_batch.loc[temp_mask, "time_h"], df_batch.loc[temp_mask,"temperature_C"], color="green", marker="o", label="Optimal")
+        axes[0, 1].scatter(df_batch.loc[[not x for x in temp_mask], "time_h"], df_batch.loc[[not x for x in temp_mask], "temperature_C"], color="red", marker="x", label="Sub-optimal")
+
+        axes[0, 1].set_xlabel("Time [h]")
+        axes[0, 1].set_ylabel("Temperature [Celsius]")
+        axes[0, 1].legend()
+
+        #pH stuff
+        axes[1, 0].scatter(df_batch.loc[ph_mask, "time_h"], df_batch.loc[ph_mask, "pH"], color="green", marker="o", label="Optimal")
+        axes[1, 0].scatter(df_batch.loc[[not x for x in ph_mask], "time_h"], df_batch.loc[[not x for x in ph_mask], "pH"], color="red", marker="x", label="Sub-optimal")
+
+        axes[1, 0].set_xlabel("Time [h]")
+        axes[1, 0].set_ylabel("pH")
+        axes[1, 0].legend()
+
+        #d.o. stuff
+        axes[1, 1].scatter(df_batch["time_h"], df_batch["DO_percent"], color="blue", marker="o", label="D. O. Percent")
+        axes[1, 1].set_xlabel("Time [h]")
+        axes[1, 1].set_ylabel("Dissolved Oxygen [%]")
+        axes[1, 1].legend()
+
+        #adding tickmarks
+        for ax in axes.flatten():
+            ax.set_xticks(range(int(df_batch["time_h"].min()),int(df_batch["time_h"].max()) + 1,6))
+
+        plt.savefig(filepath)
+        plt.close(fig)
+
+
     def export_summary(self, filepath):
         """
         Generates a batch summary table and exports it to a CSV file.
@@ -180,3 +226,25 @@ class BioprocessMonitor:
         C_product_g_L^-1_final
             Final product concentration for the batch.
         """
+
+        df = pandas.read_csv(self.filepath)
+        batch_ids = df["batch_id"].unique()
+
+        records = []
+
+        for batch_id in batch_ids:
+            df_batch = self.extract_batch(batch_id)
+
+            total_entries = df_batch.shape[0]
+            temp_mask = self.optimal_temperature_mask(df_batch)
+            ph_mask = self.optimal_ph_mask(df_batch)
+            temp_ideal_entries = len(df_batch.loc[temp_mask,"temperature_C"])
+            ph_ideal_entries = len(df_batch.loc[ph_mask,"pH"])
+
+            final_c = df_batch["C_product_g_L^-1"].iloc[-1]
+
+            record = (batch_id, round(100*ph_ideal_entries/total_entries, 2), round(100*temp_ideal_entries/total_entries,2), round(final_c,2))
+            records.append(record)
+
+        summary = pandas.DataFrame(records, columns=["batch_id", "ph_optimal_percent", "temperature_optimal_percent", "C_product_g_L^-1_final"])
+        summary.to_csv(filepath, index=False)
