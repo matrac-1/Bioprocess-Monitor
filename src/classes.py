@@ -1,4 +1,5 @@
 import pandas as pandas
+
 class BioprocessMonitor:
     def __init__(self, filepath, ph_lims, temperature_lims):
         """
@@ -101,6 +102,10 @@ class BioprocessMonitor:
         int
             Total number of distinct batch identifiers.
         """
+        df = pandas.read_csv(self.filepath)
+        return df['batch_id'].nunique()
+
+
 
     def export_dashboard(self, batch_id, filepath):
         """
