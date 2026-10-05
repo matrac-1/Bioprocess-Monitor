@@ -1,14 +1,20 @@
 # Repository Structure
 
-`datasets/`: Store raw data in this directory. Delete `.gitkeep` once you add your own files to this directory.
+`Simple Bioprocess Monitor/`: Project creates a simple, reusable "bioprocess monitor" class to help visualize bioprocess data.
 
-`figures/`: Export figures created by your code to this directory. Delete `.gitkeep` once you add your own files to this
-directory.
+`overview/`: The goal of this project was to create a basic visualization tool for batch bioprocess data. Data from a .csv file can be represented and have simple analyses performed on it using the code. Specifically, the code was centered around interpretting bioprocess data as an example. The project also gave me the opportunity to familiarize myself with data visalisation in Python for the first time.
 
-`src/`: Store all Python code, except main.py, in this directory.
+`Features/`: 
+-Compares/filters pH and temperature data to user-specified limits
+-Plots various concentration data as a function of time
+-Generates visual dashboard with plots to represent the aformentionned information on the data set
+-Creates a summary table with summary entries for data on a per-batch basis.
 
-`tables/`: Export tables created by your code to this directory. Delete `.gitkeep` once you add your own files to this
-directory.
+`technnologies/`: Following tools were used to create the project :
+-Python
+-Matplot
+-Pandas
+-Numpy
 
 `.gitignore`: Contains files to be ignored by Git. You can copy the `.gitignore` file from this repository into your own
 project.
