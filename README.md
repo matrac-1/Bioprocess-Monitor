@@ -16,7 +16,7 @@
 -Pandas 3.11.0 for data extraction
 
 
-`code design/`: 
+`code design/`: When main.py runs, it uses the "BioprocessMonitor" class to compare the data for each of the 5 batches to 2 different sets of temperature and pH limits. Each batch has 2 dashboards generated for it, one for both combinations of T/pH limits. Then, 2 summary tables, one for each set of limits, is generated. 
 
 `dashboard/`: 
 
