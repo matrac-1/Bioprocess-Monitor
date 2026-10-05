@@ -11,19 +11,14 @@
 -Creates a summary table with summary entries for data on a per-batch basis.
 
 `technnologies/`: Following tools were used to create the project :
--Python
--Matplot
--Pandas
--Numpy
+-Python 3.14.7 for the main programming language
+-Matplot 3.0.5 for data plotting/visualization
+-Pandas 3.11.0 for data extraction
 
-`.gitignore`: Contains files to be ignored by Git. You can copy the `.gitignore` file from this repository into your own
-project.
 
-`environment.yaml`: Contains information about your conda environment. Run the following command:
-`conda export > environment.yaml` to generate this file for your project. You can delete the last line in this file that
-says `prefix`.
+`code design/`: 
 
-`main.py`: This is the only Python file that will be run. It should be kept relatively clean and mainly execute code
-from `src/`.
+`dashboard/`: 
 
-`README.md`: This file, which contains information about the repository.
+`summary table/`: 
+
