@@ -19,11 +19,11 @@
 `code design/`: When main.py runs, it uses the "BioprocessMonitor" class to compare the data for each of the 5 batches to 2 different sets of temperature and pH limits. Each batch has 2 dashboards generated for it, one for both combinations of T/pH limits. Then, 2 summary tables, one for each set of limits, is generated. 
 
 `dashboard/`: 
-Example dashboard for batch #5 data with pH[] and temperature[] limits.
+Example dashboard for batch #5 data with pH[5.1, 5.5] and temperature[34.5,35.5] limits.
 <img width="2560" height="1920" alt="Batch_005_Mode_B" src="https://github.com/user-attachments/assets/9b38e970-1e16-4e31-a149-6d2a3c13795e" />
 
 `summary table/`: 
-Summary data for each paramater for all batches and pH[] and temperature[] limits.
+Summary data for each paramater for all batches and pH[5.1, 5.5] and temperature[34.5,35.5] limits. 
 
 |batch_id|ph_optimal_percent|temperature_optimal_percent|C_product_g_L^-1_final|
 |--------|------------------|---------------------------|----------------------|
